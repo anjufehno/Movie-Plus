@@ -1,21 +1,23 @@
-import Image from 'next/image';
-import logo from '@/image/logo.jpg';
-import Link from 'next/link';
-import Search from '@/components/Search';
+import Image from "next/image";
+import Link from "next/link";
+import logo from "@/image/logo.jpg";
+import Search from "@/components/Search";
 
-const Header: React.FC = () => {
+export default function Header() {
   return (
-    <div style={{ display: 'flex', alignItems: 'center',  color: 'black'}}>
-      <div style={{ marginRight: '200px' }}>
-        <Search />
-      </div>
-      <Link href="http://localhost:3000/">
-        <div className="logo cursor-pointer">
-          <Image src={logo} alt="Logo" width={300} height={300} />
-        </div>
+    <div className="flex items-center gap-4 md:gap-8">
+      <Search />
+
+      <Link href="/" aria-label="MoviePlus home" className="shrink-0">
+        <Image
+          src={logo}
+          alt="MoviePlus"
+          width={160}
+          height={160}
+          className="h-auto w-24 md:w-32"
+          priority
+        />
       </Link>
     </div>
-    )
+  );
 }
-
-export default Header;
