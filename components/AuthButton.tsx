@@ -1,39 +1,37 @@
-import { createClient } from '@/utils/supabase/server'
-import Link from 'next/link'
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function AuthButton() {
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
+  const cookieStore = cookies();
+  const supabase = createClient(cookieStore);
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   const signOut = async () => {
-    'use server'
+    "use server";
 
-    const cookieStore = cookies()
-    const supabase = createClient(cookieStore)
-    await supabase.auth.signOut()
-    return redirect('/')
-  }
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+    await supabase.auth.signOut();
+    redirect("/");
+  };
+
+  const buttonClassName =
+    "rounded-md border px-3 py-2 font-thin no-underline transition hover:bg-neutral-800";
 
   return user ? (
-    <div className="flexf items-center font-thin gap-4">
-      <form action={signOut}>
-        <button className="py-2 px-3 flex rounded-md no-underline hover:bg-btn-background-hover border absolute top-0 left-0 m-4 ml-4 font-thin">
-          Logout
-        </button>
-      </form>
-    </div>
+    <form action={signOut}>
+      <button type="submit" className={buttonClassName}>
+        Logout
+      </button>
+    </form>
   ) : (
-    <Link
-      href="/login"
-      className="py-2 px-3 flex rounded-md no-underline hover:bg-btn-background-hover border absolute top-0 left-0 m-4 ml font-thin"
-    >
+    <Link href="/login" className={buttonClassName}>
       Login
     </Link>
-  )
+  );
 }
