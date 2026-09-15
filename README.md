@@ -9,6 +9,8 @@
 
 **A full-stack movie discovery web application built with Next.js, TypeScript and Supabase.**
 
+**Portfolio focus:** Type-safe Next.js architecture, API integration, authentication and CI.
+
 MoviePlus lets users discover movies by category, search the TMDB catalogue and access personalized features through authentication.
 
 ---
