@@ -1,77 +1,137 @@
-# MoviePlus Rakendus
+# MoviePlus
 
-MoviePlus on dünaamiline veebirakendus, mis on loodud filmihuvilistele ja pakub mitmeid funktsioone, et suurendada teie filmivaatamise kogemust. Alates laia filmikollektsiooni uurimisest kuni isikliku filmikapi ja päeviku haldamiseni on MoviePlus teie peamine platvorm kõiges kinoga seotus.
+![Next.js](https://img.shields.io/badge/Next.js-000?style=for-the-badge&logo=nextdotjs)
+![React](https://img.shields.io/badge/React-000?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-000?style=for-the-badge&logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-000?style=for-the-badge&logo=supabase)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-000?style=for-the-badge&logo=tailwindcss)
 
-## Funktsioonid
+**A full-stack movie discovery web application built with Next.js, TypeScript and Supabase.**
 
-### 1. Filmide Otsing
+MoviePlus lets users discover movies by category, search the TMDB catalogue and access personalized features through authentication.
 
-- Otsige nii klassikalisi kui ka kaasaegseid filme.
-- Saage üksikasjalikku teavet iga filmi kohta, sealhulgas lühikest kirjeldust kiirete ülevaadete jaoks.
+---
 
-### 2. Sisselogimine
+## ✨ Features
 
-- Registreeritud kasutajad saavad sisse logida, et avada isikupärased funktsioonid.
+- 🎬 Browse popular, comedy, drama, horror and animated movies
+- 🔎 Search movies using the TMDB API
+- 📄 Open individual movie detail pages
+- 🔐 User authentication with Supabase
+- 👤 Personalized profile area
+- 💬 Feedback flow
+- 📬 Newsletter section
+- 📱 Responsive interface
+- ⚡ Server-side data fetching with Next.js
+- 🛡 Route and session handling with middleware
 
-### 3. Filmide Žanrid
+---
 
-- Uurige filme žanrite järgi kategooriates.
-- Leidke ja avastage filme hõlpsalt oma eelistatud žanri alusel.
+## 🛠 Tech Stack
 
-### 4. Tagasiside
+### Frontend
 
-- Anna tagasisidet platvormi kohta.
-- Jälgige platvormi arengut ja lisage oma panus selle täiustamisse.
+`Next.js` · `React` · `TypeScript` · `Tailwind CSS`
 
-### 5. Uudiskiri
+### Backend & Data
 
-- Liitu uudiskirjaga, et saada regulaarselt teavet saidi uuenduste, uute funktsioonide ja kinomaailma uudiste kohta.
+`Supabase` · `Supabase Auth` · `TMDB API`
 
-### 6. Meist Leht
+### Tooling
 
-- Tutvuge MoviePlus meeskonnaga
+`npm` · `Git` · `GitHub`
 
-## Kasutatud Tehnoloogiad
+---
 
-- React
-- React Router
-- Material UI
-- [Supabase]
+## Architecture
 
-# Wireframe
+The application uses the **Next.js App Router** with routes separated by feature:
 
-- Main page
+```text
+app/
+├── auth/
+├── description/
+├── feedback/
+├── login/
+├── newsletter/
+├── profile/
+├── search/
+└── page.tsx
+```
 
-<img src="wireframe/movies.jpg" alt="Main page" width="200">
+Shared UI lives in reusable components, while movie data is retrieved through a dedicated API layer.
 
-- About us page
+```text
+components/   → reusable UI
+API/          → TMDB data access
+utils/        → Supabase clients and shared helpers
+middleware.ts → auth/session handling
+```
 
-<img src="wireframe/aboutus.jpg" alt="About us page" width="200">
+---
 
-- Feedback page
+## Data Integration
 
-<img src="wireframe/feedback.jpg" alt="Feedback page" width="200">
+Movie data is fetched from **The Movie Database (TMDB)** using server-side requests and an environment-protected API token.
 
-- Newsletter page
+The API layer supports:
 
-<img src="wireframe/news.jpg" alt="Newsletter page" width="200">
+- popular movie discovery
+- genre-based collections
+- movie search
+- individual movie details
 
-- Search page
+Supabase is used for authentication and user-related functionality.
 
-<img src="wireframe/search.jpg" alt="Search page" width="200">
+---
 
-- Movies description page
+## Run Locally
 
-<img src="wireframe/movieD.jpg" alt="Movies description page" width="200">
+### 1. Clone the repository
 
-- Sign up page
+```bash
+git clone https://github.com/anjufehno/Movie-Plus.git
+cd Movie-Plus
+```
 
-<img src="wireframe/signup.jpg" alt="Sign up page" width="200">
+### 2. Install dependencies
 
-- Login page
+```bash
+npm install
+```
 
-<img src="wireframe/login.jpg" alt="Login page" width="200">
+### 3. Configure environment variables
 
-- Main page (sign in)
+Create a `.env.local` file and provide the required Supabase configuration and TMDB API token.
 
-<img src="wireframe/mypage.jpg" alt="Main page (sign in)" width="200">
+```text
+TMDB_API_AUTH=your_tmdb_token
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### 4. Start development server
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000` in your browser.
+
+---
+
+## Project Focus
+
+This project explores building a larger React application with:
+
+- typed frontend development
+- external API integration
+- authentication
+- server-side data fetching
+- reusable component architecture
+- route-based application structure
+- responsive UI
+
+---
+
+Built by [Jelizaveta Kruglova](https://github.com/anjufehno).
