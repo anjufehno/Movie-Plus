@@ -1,88 +1,82 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import Image from "next/image";
 import { getMovieDescription } from "@/API/api";
-import Footer from "@/components/Footer";
-import AuthButton from "@/components/AuthButton";
-import Header from "@/components/Header";
-import { Key } from "react";
 import AboutMeButton from "@/components/AboutMeButton";
+import AuthButton from "@/components/AuthButton";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 
-async function MovieDescriptionPage({ params }: {params:any}) {
-  const IMAGE_BASE_URL = "https://www.themoviedb.org/t/p/w220_and_h330_face/";
-  const movieDescription = await getMovieDescription(params?.filmId);
+const IMAGE_BASE_URL = "https://www.themoviedb.org/t/p/w220_and_h330_face/";
 
-  console.log('movieDetails', movieDescription)
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({ cookies: () => cookieStore });
+type MovieDescriptionPageProps = {
+  params: {
+    filmId: string;
+  };
+};
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+export default async function MovieDescriptionPage({
+  params,
+}: MovieDescriptionPageProps) {
+  const movie = await getMovieDescription(params.filmId);
+  const genres = movie.genres.map((genre) => genre.name).join(", ");
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return(
-    <div className="flex-1 w-full flex flex-col gap-10 items-center bg-black">
-      <nav className="w-full flex justify-center border-b-foreground/10 h-13">
-    <div className="w-full max-w-7xl flex justify-between items-center py-1 px-3 text-sm">
-        <AboutMeButton/>
-        <AuthButton />
-        <Header />
-      </div>
-    </nav>
-  <div className="flex flex-col w-fit items-start">
-    <div className="animate-in flex flex-row gap-8 self-center items-center pb-10"></div>
-    <div className="flex flex-row justify-end gap-10">
-      <div className="flex flex-col w-1/2 items-end">
-        {movieDescription.backdrop_path && (
-          <img
-            src={IMAGE_BASE_URL + movieDescription.backdrop_path}
-            className="custom-width"
-            width={300}
-            height={300}
-          />
-        )}
-      </div>
-      <div className="animate-in w-2/4 flex flex-col gap-10 self-start font-thin">
-        <h1 className="text-[38px] mr-10 font-bold self-start w-1/2 font-thin">
-          {movieDescription.title}
-        </h1>
-        <div className="flex flex-row w-full gap-2 font-thin">
-          <h4 className="text-xl">Release date:</h4>
-          <p className="mt-1">{movieDescription.release_date}</p>
-        </div>
-        <div className="flex flex-row w-full gap-2 font-thin items-center">
-            <h4 className="text-xl">Movie genres:</h4>
-              <div className="mt-1 flex flex-wrap gap-2">
-            {movieDescription.genres &&
-              movieDescription.genres
-                .reduce((acc: any[][], genre: { name: any; }, index: number) => {
-                  if (index % 2 === 0) {
-                    acc.push([genre.name]);
-                  } else {
-                    acc[acc.length - 1].push(genre.name);
-                  }
-                  return acc;
-                }, [])
-                .map((group: any[], index: Key | null | undefined) => (
-                  <p key={index}>{group.join(", ")}</p>
-                ))}
+  return (
+    <div className="flex min-h-screen w-full flex-col items-center bg-black text-white">
+      <nav className="w-full border-b border-white/10">
+        <div className="mx-auto flex w-full max-w-7xl flex-wrap items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-3">
+            <AboutMeButton />
+            <AuthButton />
           </div>
+
+          <Header />
         </div>
-        <div className="flex flex-col w-1/2 pr-20 gap-5 font-thin">
-          <h4 className="text-xl">Movie description:</h4>
-          <p>{movieDescription.overview}</p>
+      </nav>
+
+      <main className="mx-auto grid w-full max-w-5xl flex-1 gap-10 px-4 py-12 md:grid-cols-[auto_1fr] md:items-start">
+        <div className="flex justify-center">
+          {movie.poster_path ? (
+            <Image
+              src={`${IMAGE_BASE_URL}${movie.poster_path}`}
+              alt={`${movie.title} poster`}
+              width={330}
+              height={495}
+              className="h-auto w-[280px] rounded object-cover md:w-[330px]"
+              priority
+            />
+          ) : (
+            <div className="flex h-[495px] w-[330px] items-center justify-center rounded bg-neutral-900 text-neutral-400">
+              Poster unavailable
+            </div>
+          )}
         </div>
-      </div>
+
+        <article className="flex flex-col gap-6">
+          <h1 className="text-3xl font-semibold md:text-4xl">
+            {movie.title}
+          </h1>
+
+          <dl className="grid gap-4 text-neutral-200">
+            <div>
+              <dt className="font-medium text-white">Release date</dt>
+              <dd>{movie.release_date || "Unknown"}</dd>
+            </div>
+
+            <div>
+              <dt className="font-medium text-white">Genres</dt>
+              <dd>{genres || "Not specified"}</dd>
+            </div>
+          </dl>
+
+          <section>
+            <h2 className="mb-2 text-xl font-medium">Overview</h2>
+            <p className="max-w-2xl leading-7 text-neutral-300">
+              {movie.overview || "No description is available for this movie."}
+            </p>
+          </section>
+        </article>
+      </main>
+
+      <Footer />
     </div>
-  </div>
-    <Footer />
- </div>
-)
-
-  
+  );
 }
-
-export default MovieDescriptionPage;
