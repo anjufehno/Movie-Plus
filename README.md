@@ -5,6 +5,7 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-000?style=for-the-badge&logo=typescript)
 ![Supabase](https://img.shields.io/badge/Supabase-000?style=for-the-badge&logo=supabase)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-000?style=for-the-badge&logo=tailwindcss)
+![Typecheck](https://github.com/anjufehno/Movie-Plus/actions/workflows/typecheck.yml/badge.svg)
 
 **A full-stack movie discovery web application built with Next.js, TypeScript and Supabase.**
 
@@ -15,15 +16,18 @@ MoviePlus lets users discover movies by category, search the TMDB catalogue and 
 ## ✨ Features
 
 - 🎬 Browse popular, comedy, drama, horror and animated movies
-- 🔎 Search movies using the TMDB API
-- 📄 Open individual movie detail pages
+- 🔎 Search movies through the TMDB API
+- 📄 View typed movie detail pages
 - 🔐 User authentication with Supabase
 - 👤 Personalized profile area
 - 💬 Feedback flow
 - 📬 Newsletter section
 - 📱 Responsive interface
-- ⚡ Server-side data fetching with Next.js
+- ⚡ Parallel server-side data fetching with Next.js
 - 🛡 Route and session handling with middleware
+- ⏳ Application-level loading state
+- ⚠️ Error boundary with retry support
+- ✅ Automated TypeScript checks with GitHub Actions
 
 ---
 
@@ -37,9 +41,9 @@ MoviePlus lets users discover movies by category, search the TMDB catalogue and 
 
 `Supabase` · `Supabase Auth` · `TMDB API`
 
-### Tooling
+### Engineering & Workflow
 
-`npm` · `Git` · `GitHub`
+`TypeScript strict mode` · `GitHub Actions` · `npm` · `Git` · `GitHub`
 
 ---
 
@@ -56,17 +60,21 @@ app/
 ├── newsletter/
 ├── profile/
 ├── search/
+├── error.tsx
+├── loading.tsx
 └── page.tsx
 ```
 
-Shared UI lives in reusable components, while movie data is retrieved through a dedicated API layer.
+Shared UI lives in reusable components, while movie data is retrieved through a dedicated typed API layer.
 
 ```text
 components/   → reusable UI
-API/          → TMDB data access
+API/          → typed TMDB data access and request handling
 utils/        → Supabase clients and shared helpers
 middleware.ts → auth/session handling
 ```
+
+The homepage uses reusable movie sections and fetches independent collections in parallel with `Promise.all`.
 
 ---
 
@@ -74,14 +82,30 @@ middleware.ts → auth/session handling
 
 Movie data is fetched from **The Movie Database (TMDB)** using server-side requests and an environment-protected API token.
 
-The API layer supports:
+The API layer includes:
 
-- popular movie discovery
-- genre-based collections
+- typed movie and genre models
+- centralized request handling
+- response status validation
+- environment configuration checks
+- safe search query encoding
+- popular and genre-based movie collections
 - movie search
 - individual movie details
 
 Supabase is used for authentication and user-related functionality.
+
+---
+
+## Quality & CI
+
+The project uses TypeScript strict mode and includes a GitHub Actions workflow that runs type checking on pushes and pull requests.
+
+```bash
+npm run typecheck
+```
+
+User-facing loading and error states are implemented through the Next.js App Router conventions.
 
 ---
 
@@ -122,15 +146,17 @@ Open `http://localhost:3000` in your browser.
 
 ## Project Focus
 
-This project explores building a larger React application with:
+This project demonstrates:
 
-- typed frontend development
+- type-safe React and Next.js development
 - external API integration
 - authentication
 - server-side data fetching
 - reusable component architecture
 - route-based application structure
-- responsive UI
+- loading and error UX
+- responsive interface design
+- automated code quality checks
 
 ---
 
