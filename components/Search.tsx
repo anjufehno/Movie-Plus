@@ -1,48 +1,48 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 export default function Search() {
-  const [searchText, setSearchText] = React.useState("");
+  const [searchText, setSearchText] = useState("");
   const router = useRouter();
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    if (searchText) {
-      router.push(`/search?query=${searchText}`);
-    }
-  };
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
+    const query = searchText.trim();
+    if (!query) return;
+
+    router.push(`/search?query=${encodeURIComponent(query)}`);
   };
 
   return (
-    <nav className="navbar">
-      <form
-        className="d-flex"
-        onSubmit={handleSubmit}
-        role="search"
-        style={{ maxWidth: "800px" }}
+    <form
+      onSubmit={handleSubmit}
+      role="search"
+      className="flex items-center gap-2"
+    >
+      <label htmlFor="search-input" className="sr-only">
+        Search movies
+      </label>
+
+      <input
+        id="search-input"
+        type="search"
+        value={searchText}
+        onChange={(event) => setSearchText(event.target.value)}
+        placeholder="Search movies"
+        autoComplete="off"
+        className="h-9 w-40 rounded border border-neutral-700 bg-neutral-950 px-3 text-sm text-white outline-none transition focus:border-neutral-400 md:w-64"
+      />
+
+      <button
+        type="submit"
+        className="rounded px-2 py-1 text-xl transition hover:bg-neutral-800"
+        aria-label="Search"
       >
-        <input
-          onChange={handleChange}
-          value={searchText}
-          className="form-control mr-sm-2 rounded text-white pl-2 font-thin"
-          type="search"
-          placeholder="search"
-          aria-label="search"
-          style={{height: "30px", color:"black"}}
-          autoComplete="off"
-          id="search-input"
-        />
-        <button className="search-button" type="submit" id="search-submit-button">
-            <span role="button" aria-label="emoji" className="text-2xl">
-                🔎
-            </span>
-        </button>
-      </form>
-    </nav>
+        🔎
+      </button>
+    </form>
   );
 }
